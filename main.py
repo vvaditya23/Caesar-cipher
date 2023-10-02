@@ -1,32 +1,45 @@
+import art
+
+print(art.logo)
+
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
+should_continue = True
 
-def encrypt(plain_text, shift_amount):
-  encrypted_string = ""
-  for letter in plain_text:
-    position = alphabet.index(letter)
-    new_position = position + shift_amount
-    encrypted_letter = alphabet[new_position]
-    encrypted_string += encrypted_letter
-  print(encrypted_string) 
+direction = input("Type 'encode' to encrypt, type 'decode' to decrypt: ")
 
-def decrypt(encrypted_text, shift_amount):
-  decrypted_string = ""
-  for letter in encrypted_text:
-    position = alphabet.index(letter)
-    new_position = position - shift_amount
-    decrypted_letter = alphabet[new_position]
-    decrypted_string += decrypted_letter
-  print(decrypted_string)
+def caesar(input_text, shift_amount):
+  output_string = ""
+  for char in input_text:
+    if char in alphabet:
+      position = alphabet.index(char)
+      if direction == "encode": 
+        new_position = position + shift_amount
+        new_letter = alphabet[new_position]
+        output_string += new_letter
+      else:
+        new_position = position - shift_amount 
+        new_letter = alphabet[new_position]
+        output_string += new_letter
+    else:
+      output_string += char
+  if direction == "encode":
+    print(f"\nThe encrypted string is: {output_string}")
+  else:
+    print(f"\nThe decrypted string is: {output_string}")
 
-if direction == "encode":
-  text = input("Type your message:\n").lower()
-  shift = int(input("Type the shift number:\n"))
-  encrypt(text, shift)
-elif direction == "decode":
-  text = input("Type your message:\n").lower()
-  shift = int(input("Type the shift number:\n"))
-  decrypt(text, shift)
-else:
-  print("Inavlid input!")
+while should_continue:
+  if direction == "encode" or direction == "decode":
+    text = input("\nType your message: ").lower()
+    shift = int(input("\nType the shift number: "))
+    shift = shift % 26
+    caesar(text, shift)
+    result = input("\nDo you wish to continue? Y for yes, N for no.: ")
+    if result == "Y":
+      should_continue = True
+      direction = input("\nType 'encode' to encrypt, type 'decode' to decrypt: ")
+    else:
+      print("\nGoodbye!")
+      should_continue = False
+  else:
+    print("invalid input!")
